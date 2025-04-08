@@ -18,7 +18,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { toast } from "sonner"
 import FormField from "./FormField"
+import { useRouter } from "next/navigation"
 const AuthForm = ({type}:{type:FormType}) => {
+  const router = useRouter()
   const formSchema = authFormSchema(type)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -33,8 +35,12 @@ const AuthForm = ({type}:{type:FormType}) => {
       function onSubmit(values: z.infer<typeof formSchema>) {
         try {
           if(type==='sign-up'){
+            toast.success('Account Created Successfully')
+            router.push('/')
             console.log('Sign Up', values)
           }else{
+            toast.success('Log In Successful')
+            router.push('/')
             console.log('SIGN IN', values);
           }
         } catch (error) {
@@ -57,9 +63,9 @@ const AuthForm = ({type}:{type:FormType}) => {
     {!isSignIn && (
       <FormField control={form.control} name="name" label="Name" placeholder="Your Name"/>
     )}
-    <p>Email</p>
-    <p>Password</p>
-      <Button type="submit">{isSignIn ? 'Sign In' : 'Create an Account'}</Button>
+    <FormField control={form.control} name="email" label="Email" placeholder="Your Email" type="email"/>
+    <FormField control={form.control} name="password" label="Password" placeholder="Enter Your Password" type="password"/>
+      <Button className="btn" type="submit">{isSignIn ? 'Sign In' : 'Create an Account'}</Button>
     </form>
   </Form>
   <p className="text-center">
