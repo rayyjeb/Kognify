@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { getRandomInterviewCover } from '@/lib/utils';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import DisplayTechIcons from './DisplayTechIcons';
 const InterviewCard = ({interviewId, userId, role, type, techstack, createdAt}:InterviewCardProps) => {
     const feedback = null as Feedback | null
     const normalizedType = /mix/gi.test(type)?'Mixed': type;
@@ -29,15 +30,15 @@ const InterviewCard = ({interviewId, userId, role, type, techstack, createdAt}:I
                     <p>{feedback?.totalScore || '---'}/100</p>
                 </div>
             </div>
-            <p className='line-clamp-2 mt-5'>
+            <p className='line-clamp-2 mt-5 text-sm'>
                 {feedback?.finalAssessment ||"You haven't taken the interview yet. Take it now to improve your skills."}
             </p>
-            <div className='flex flex-row justify-between '>
-    <p>Tech Icons</p>
-    <Button className='btn-primary'>
-        <Link href={feedback ? `/interview/${interviewId}/feedback` :`/interview/${interviewId}` }> {feedback ? `Check Feedback`:`View Interview`</Link>
-    </Button>
             </div>
+            <div className='flex flex-row justify-between '>
+    <DisplayTechIcons techStack={techstack}/>
+    <Button className='btn-primary'>
+        <Link href={feedback ? `/interview/${interviewId}/feedback` :`/interview/${interviewId}` }> {feedback ? `Check Feedback`:`View Interview`}</Link>
+    </Button>
         </div>
       </div>
     </div>
