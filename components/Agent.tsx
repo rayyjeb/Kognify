@@ -62,7 +62,7 @@ const Agent = ({
     };
 
     const onError = (error: Error) => {
-      console.log("Error:", error);
+      console.log("Error and meeting ended:", error);
     };
 
     vapi.on("call-start", onCallStart);
