@@ -109,9 +109,15 @@ const Agent = ({
       if (type === "generate") {
         router.push("/");
       } else {
-        handleGenerateFeedback(messages);
+        if (messages.length > 0) {
+          handleGenerateFeedback(messages);
+        } else {
+          console.log("No messages to generate feedback from");
+          router.push("/");
+        }
       }
     }
+    
   }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
 
   const handleCall = async () => {
@@ -128,8 +134,9 @@ const Agent = ({
       let formattedQuestions = "";
       if (questions) {
         formattedQuestions = questions
-          .map((question) => `- ${question}`)
-          .join("\n");
+        .map((question) => `- ${question}`)
+        .join("\n");
+        console.log("questions: ", questions);
       }
 
       await vapi.start(interviewer, {
