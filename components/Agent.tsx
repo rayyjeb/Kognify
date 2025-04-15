@@ -70,13 +70,7 @@ const Agent = ({
     vapi.on("message", onMessage);
     vapi.on("speech-start", onSpeechStart);
     vapi.on("speech-end", onSpeechEnd);
-    vapi.on('error', (errorData) => {
-      if (errorData.error?.type === 'no-room') {
-        alert("The meeting has ended or no longer exists. Please try starting a new one.");
-      }
-    });
-
-
+    vapi.on('error', onError)
     return () => {
       vapi.off("call-start", onCallStart);
       vapi.off("call-end", onCallEnd);
@@ -122,7 +116,7 @@ const Agent = ({
         }
       }
     }
-
+    
   }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
 
   const handleCall = async () => {
@@ -139,8 +133,8 @@ const Agent = ({
       let formattedQuestions = "";
       if (questions) {
         formattedQuestions = questions
-          .map((question) => `- ${question}`)
-          .join("\n");
+        .map((question) => `- ${question}`)
+        .join("\n");
         console.log("questions: ", questions);
       }
 
@@ -154,8 +148,10 @@ const Agent = ({
   };
 
   const handleDisconnect = () => {
-    setCallStatus(CallStatus.FINISHED);
-    vapi.stop();
+    if (callStatus === CallStatus.ACTIVE) {
+      vapi.stop();
+      setCallStatus(CallStatus.FINISHED);
+    }
   };
 
   return (
