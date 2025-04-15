@@ -1,3 +1,4 @@
+import { vapi } from './../lib/vapi.sdk';
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { z } from "zod";
 
@@ -108,13 +109,9 @@ export const interviewer: CreateAssistantDTO = {
   },
   voice: {
     
-    provider: "11labs",
-    voiceId: "neha",
-    stability: 0.4,
-    similarityBoost: 0.8,
+    provider: "vapi",
+    voiceId: "Neha",
     speed: 0.9,
-    style: 0.5,
-    useSpeakerBoost: true,
   },
   model: {
     provider: "openai",
